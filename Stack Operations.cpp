@@ -1,82 +1,135 @@
-/* C++ program to implement basic stack
-operations */
-#include <bits/stdc++.h>
+/*Stack operations using templates*/
 
+
+#include <iostream>
+#include <cstdlib>
 using namespace std;
-
-#define MAX 1000
-
-class Stack {
-	int top;
-
+ 
+// Define the default capacity of a stack
+#define SIZE 10
+ 
+// A class to represent a stack
+template <class X>
+class stack
+{
+    X *arr;
+    int top;
+    int capacity;
+ 
 public:
-	int a[MAX]; // Maximum size of Stack
-
-	Stack() { top = -1; }
-	bool push(int x);
-	int pop();
-	int peek();
-	bool isEmpty();
+    stack(int size = SIZE);         // constructor
+ 
+    void push(X);
+    X pop();
+    X peek();
+ 
+    int size();
+    bool isEmpty();
+    bool isFull();
+ 
+    // destructor
+    ~stack() {
+        delete[] arr;
+    }
 };
-
-bool Stack::push(int x)
+ 
+// Constructor to initialize the stack
+template <class X>
+stack<X>::stack(int size)
 {
-	if (top >= (MAX - 1)) {
-		cout << "Stack Overflow";
-		return false;
-	}
-	else {
-		a[++top] = x;
-		cout << x << " pushed into stack\n";
-		return true;
-	}
+    arr = new X[size];
+    capacity = size;
+    top = -1;
 }
-
-int Stack::pop()
+ 
+// Function to add an element `x` to the stack
+template <class X>
+void stack<X>::push(X x)
 {
-	if (top < 0) {
-		cout << "Stack Underflow";
-		return 0;
-	}
-	else {
-		int x = a[top--];
-		return x;
-	}
+    if (isFull())
+    {
+        cout << "Overflow\nProgram Terminated\n";
+        exit(EXIT_FAILURE);
+    }
+ 
+    cout << "Inserting " << x << endl;
+    arr[++top] = x;
 }
-int Stack::peek()
+ 
+// Function to pop the top element from the stack
+template <class X>
+X stack<X>::pop()
 {
-	if (top < 0) {
-		cout << "Stack is Empty";
-		return 0;
-	}
-	else {
-		int x = a[top];
-		return x;
-	}
+    // check for stack underflow
+    if (isEmpty())
+    {
+        cout << "Underflow\nProgram Terminated\n";
+        exit(EXIT_FAILURE);
+    }
+ 
+    cout << "Removing " << peek() << endl;
+ 
+    // decrease stack size by 1 and (optionally) return the popped element
+    return arr[top--];
 }
-
-bool Stack::isEmpty()
+ 
+// Function to return the top element of the stack
+template <class X>
+X stack<X>::peek()
 {
-	return (top < 0);
+    if (!isEmpty()) {
+        return arr[top];
+    }
+    else {
+        exit(EXIT_FAILURE);
+    }
 }
-
-// Driver program to test above functions
+ 
+// Utility function to return the size of the stack
+template <class X>
+int stack<X>::size() {
+    return top + 1;
+}
+ 
+// Utility function to check if the stack is empty or not
+template <class X>
+bool stack<X>::isEmpty() {
+    return top == -1;               // or return size() == 0;
+}
+ 
+// Utility function to check if the stack is full or not
+template <class X>
+bool stack<X>::isFull() {
+    return top == capacity - 1;     // or return size() == capacity;
+}
+ 
 int main()
 {
-	class Stack s;
-	s.push(10);
-	s.push(20);
-	s.push(30);
-	cout << s.pop() << " Popped from stack\n";
-	//print all elements in stack :
-	cout<<"Elements present in stack : ";
-	while(!s.isEmpty())
-	{
-		// print top element in stack
-		cout<<s.peek()<<" ";
-		// remove top element in stack
-		s.pop();
-	}
-
-	return 0;
+    stack<string> pt(2);
+ 
+    pt.push("A");
+    pt.push("B");
+ 
+    pt.pop();
+    pt.pop();
+ 
+    pt.push("C");
+ 
+    // Prints the top of the stack
+    cout << "The top element is " << pt.peek() << endl;
+ 
+    // Returns the total number of elements present in the stack
+    cout << "The stack size is " << pt.size() << endl;
+ 
+    pt.pop();
+ 
+    // check if the stack is empty or not
+    if (pt.isEmpty()) {
+        cout << "The stack is empty\n";
+    }
+    else {
+        cout << "The stack is not empty\n";
+    }
+ 
+    return 0;
 }
