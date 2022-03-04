@@ -1,3 +1,3 @@
 # Huawei Internship Assignments
-Clamendeena.S
+This Repository consists of Assignments
 
